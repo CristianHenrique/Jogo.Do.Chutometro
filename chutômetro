@@ -1,0 +1,37 @@
+import random
+import PySimpleGUI as sg
+
+class generator:
+    def __init__(self):
+        sg.theme('SandyBeach')
+        self.numero_aleatorio = random.randint(1, 5)
+        layout = [
+            [sg.Text('Jogo do Chutômetro', size=(30, 1), justification='center', font=('Helvetica', 16))],
+            [sg.Text('Chute um número entre 1 e 5:', size=(30, 1), justification='center')],
+            [sg.Input(key='chutar', size=(10, 1)), sg.Button('Chute')],
+            [sg.Button('Gerar número aleatório')],
+            [sg.Text('', size=(30, 1), justification='center', key='resultado')],
+        ]
+        self.window = sg.Window('Jogo do Chutômetro', layout, element_justification='center')
+
+    def chute(self):
+        while True:
+            event, values = self.window.read()
+            if event == sg.WINDOW_CLOSED:
+                break
+            if event == 'Gerar número aleatório':
+                self.numero_aleatorio = random.randint(1, 5)
+                self.window['resultado'].update('')
+            elif event == 'Chute':
+                chute = int(values['chutar'])
+                if chute < self.numero_aleatorio:
+                    self.window['resultado'].update('Chute mais alto!')
+                elif chute == self.numero_aleatorio:
+                    self.window['resultado'].update('Você acertou!')
+                else:
+                    self.window['resultado'].update('Chute mais baixo!')
+
+        self.window.close()
+
+gen = generator()
+gen.chute()
